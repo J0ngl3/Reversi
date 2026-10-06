@@ -128,3 +128,5 @@ namespace Reversi
         }
     }
 }
+
+// HEJ HEJ MAHDY!!
