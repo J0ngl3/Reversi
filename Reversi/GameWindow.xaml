@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Reversi"
         mc:Ignorable="d"
-        Title="Reversi" Height="Auto" Width="Auto" Background="Black">
-    <Grid x:Name="GameGrid" Width="400" Height="400">
+        Title="Reversi" Height="720" Width="720" Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinHeight="450" MinWidth="450">
+  
+  <Grid x:Name="GameGrid" Width="400" Height="400">
     </Grid>
 </Window>

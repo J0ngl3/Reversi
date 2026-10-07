@@ -14,7 +14,6 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
 
 namespace Reversi
 {
@@ -33,7 +32,7 @@ namespace Reversi
             CreateDisks();
             SetupStartingBoard();
         }
-
+        
         private void CreateBoard()
         {
             for (int i = 0; i < 8; i++)
@@ -41,6 +40,7 @@ namespace Reversi
                 GameGrid.RowDefinitions.Add(new RowDefinition());
                 GameGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
+            
             for (int row = 0; row < 8; row++)
             {
                 for (int column = 0; column < 8; column++)
