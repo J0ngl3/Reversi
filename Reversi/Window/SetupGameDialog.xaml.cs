@@ -17,8 +17,20 @@ namespace Reversi
     /// <summary>
     /// Interaction logic for SetupGameDialog.xaml
     /// </summary>
+    public enum GameMode
+    {
+        hvh, hvc, cvc
+    }
     public partial class SetupGameDialog : Window
     {
+        public void HVHOptionPicked(object sender, RoutedEventArgs e)
+        {
+            SelectedGameMode = GameMode.hvh;
+        }
+        public GameMode SelectedGameMode
+        {
+            get; private set;
+        }
         public SetupGameDialog()
         {
             InitializeComponent();
