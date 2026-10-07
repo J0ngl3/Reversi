@@ -55,10 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SetupGameDialog.xaml.cs">
+    <Compile Include="Game\GameBoard.cs" />
+    <Compile Include="Game\GameManager.cs" />
+    <Compile Include="Player\ComputerPlayer.cs" />
+    <Compile Include="Player\HumanPlayer.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Compile Include="Window\SetupGameDialog.xaml.cs">
       <DependentUpon>SetupGameDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="GameWindow.xaml">
+    <Page Include="Window\GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -66,11 +71,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GameWindow.xaml.cs">
+    <Compile Include="Window\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SetupGameDialog.xaml">
+    <Page Include="Window\SetupGameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
