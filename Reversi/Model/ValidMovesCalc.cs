@@ -13,6 +13,7 @@ namespace Reversi.Model
         public int Cols = 8;
         public Dictionary<PlayerColor, List<PlayerColor>> ValidMoves;
         private List<Position> OutFlanked;
+        
 
         private bool isInsideBoard(int r, int c)
         {
@@ -21,14 +22,33 @@ namespace Reversi.Model
 
 
 
-        public void GetValidMoves(PlayerColor[,] board, PlayerColor currentPlayer)
+        public Dictionary<Position, List<Position>> GetValidMoves(PlayerColor[,] board, PlayerColor currentPlayer)
         {
-            OutFlanked = new List<Position>();
-            public PlayerColor Opponent { get {} }
             
+                = OutFlankedInDirection()
+            ValidMoves = new Dictionary<Position, List<Position>>()
 
         }
 
+        public List<Position> OutFlankedInDirection(Position pos, PlayerColor player, PlayerColor[,] board, int rDelta, int cDelta)
+        {
+            OutFlanked = new List<Position>();
+            int r = pos.Row + rDelta;
+            int c = pos.Col + cDelta;
+            while(isInsideBoard(r,c) && board[r,c] != PlayerColor.None)
+            {
+                if (board[r,c] == player.Opponent())
+                {
+                    OutFlanked.Add(new Position(r, c));
+                    r += rDelta;
+                    c += cDelta;
+                }
+                else
+                {
+                    return OutFlanked;
+                }
+            }
+        }
         
 
     }
