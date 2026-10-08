@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="SetupGameDialog" Background="DimGray" Height="500" Width="500" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" FontStyle="Italic" FontFamily="Franklin Gothic Book" Background="White" Height="60" BorderBrush="Black" BorderThickness="1">CHOOSE GAMEMODE</Label>
-        <Button Height="60" Width="350"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" Background="Black" Foreground="White" Height="60" BorderBrush="Black" BorderThickness="1">CHOOSE GAMEMODE</Label>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="1" Height="60" Width="350" FontSize="30" Click="HVHOptionPicked">HUMAN VS HUMAN</Button>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="2" Height="60" Width="350" FontSize="30">HUMAN VS CPU</Button>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="3" Height="60" Width="350" FontSize="30">CPU VS CPU</Button>
     </Grid>
 </Window>
