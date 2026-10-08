@@ -11,7 +11,7 @@ namespace Reversi.Model
     {
         public int Rows = 8;
         public int Cols = 8;
-        public Dictionary<PlayerColor, List<PlayerColor>> ValidMoves;
+        private Dictionary<Position, List<Position>> ValidMoves;
         private List<Position> OutFlanked;
         
 
@@ -22,11 +22,22 @@ namespace Reversi.Model
 
 
 
-        public Dictionary<Position, List<Position>> GetValidMoves(PlayerColor[,] board, PlayerColor currentPlayer)
+        public Dictionary<Position, List<Position>> GetValidMoves(PlayerColor player, PlayerColor[,] board)
         {
             
-                = OutFlankedInDirection()
-            ValidMoves = new Dictionary<Position, List<Position>>()
+            ValidMoves = new Dictionary<Position, List<Position>>();
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Cols; c++)
+                {
+                    Position pos = new Position(r, c);
+                    if (isMoveLegal(OutFlankedEverywhere(pos, player, board)))
+                    {
+                        ValidMoves.Add((pos),OutFlankedEverywhere(pos, player, board));
+                    }
+                }
+            }
+
 
         }
 
@@ -48,8 +59,36 @@ namespace Reversi.Model
                     return OutFlanked;
                 }
             }
+            return new List<Position>();
+        }
+
+        public List<Position> OutFlankedEverywhere(Position pos, PlayerColor player, PlayerColor[,] board)
+        {
+            List<Position> OutFlanked = new List<Position>();
+            for (int rDelta = -1; rDelta <= 1; rDelta++)
+            {
+                for(int cDelta = -1; cDelta <= 1; cDelta ++)
+                {
+                    if(rDelta == 0 && cDelta == 0)
+                    {
+                        continue;
+                    }
+                    
+                    OutFlanked.AddRange(OutFlankedInDirection(pos, player, board, rDelta, cDelta));
+                }
+            }
+            return OutFlanked;
         }
         
+        private bool IsMoveLegal(PlayerColor player, Position pos, PlayerColor[,] board, out List<Position> outflanked)
+        {
+            if (board[pos.Row, pos.Col] != PlayerColor.None)
+            {
+                outflanked == null;
+                return false;
+            }
 
+            outflanked
+        }
     }
 }
