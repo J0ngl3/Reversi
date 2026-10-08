@@ -57,10 +57,10 @@
     </ApplicationDefinition>
     <Compile Include="Game\GameBoard.cs" />
     <Compile Include="Game\GameManager.cs" />
-    <Compile Include="Model\Color.cs" />
+    <Compile Include="Model\PlayerColor.cs" />
     <Compile Include="Model\MoveInfo.cs" />
     <Compile Include="Model\Position.cs" />
-    <Compile Include="Model\ValidMoves.cs" />
+    <Compile Include="Model\ValidMovesCalc.cs" />
     <Compile Include="Player\ComputerPlayer.cs" />
     <Compile Include="Player\HumanPlayer.cs" />
     <Compile Include="Player\Player.cs" />

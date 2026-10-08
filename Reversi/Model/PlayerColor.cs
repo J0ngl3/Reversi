@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reversi.Model
 {
-    public enum Color
+    public enum PlayerColor
     { None, White, Black }
+
 }

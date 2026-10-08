@@ -13,7 +13,7 @@ namespace Reversi.Game
         public Color CurrentPlayer { get; private set;}
         public bool GameOver { get; private set; }
         public Color Winner { get; private set; }
-        public Dictionary<Position, List<Postition>> ValidMoves { get; private set; }
+        public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
 
 
 
