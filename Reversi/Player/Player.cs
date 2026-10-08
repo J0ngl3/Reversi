@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Reversi.Player
 {
-    internal class Player
+    public abstract class Player
     {
+        public abstract bool IsHuman { get; }
     }
 }

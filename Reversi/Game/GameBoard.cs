@@ -8,7 +8,7 @@ using Reversi.Model;
 
 namespace Reversi.Game
 {
-    internal class GameBoard
+    public class GameBoard
     {
         public const int Rows = 8;
         public const int Cols = 8;
@@ -41,5 +41,22 @@ namespace Reversi.Game
 
         }
 
+        public void ApplyMove(Position pos, PlayerColor player, List<Position> outflanked)
+        {
+            foreach(Position disc in outflanked)
+            {
+                Board[disc.Row, disc.Col] = player;
+                DiscCount[player] += 1;
+            }
+            Board[pos.Row, pos.Col] = player;
+            DiscCount[player] += 1;
+
+            PassTurn(player);
+        }
+
+        public void PassTurn(PlayerColor player)
+        {
+            CurrentPlayer = player.Opponent();
+        }
     }
 }

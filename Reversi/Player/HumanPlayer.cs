@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Reversi.Player
 {
-    internal class HumanPlayer
+    public class HumanPlayer : Player
     {
+        public override bool IsHuman => true;
     }
 }
