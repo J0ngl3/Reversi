@@ -1,1 +1,3 @@
-Fuhhahh assignment 2.
+REVERSI / OTELLO
+
+ASSIGNMENT PARTNERS: KB, MJ, JR
