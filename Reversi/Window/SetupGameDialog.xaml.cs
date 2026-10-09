@@ -15,7 +15,15 @@ using System.Windows.Shapes;
 namespace Reversi
 {
     /// <summary>
-    /// Interaction logic for SetupGameDialog.xaml
+    /// SetupGameDialog assigns an enum for respective Gamemodes that exist,
+    ///     (1) Human vs Human
+    ///     (2) Human vs CPU
+    ///     (3) CPU vs CPU
+    /// labels and button content guide the user.
+    /// The buttons raise the event MouseClick, The event handlers assign the correct enum
+    /// Safely exits with DialogResult = true;
+    /// set to public so GameManager can retrieve the value.
+    /// 
     /// </summary>
     public enum GameMode
     {
