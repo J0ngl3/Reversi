@@ -32,6 +32,12 @@ namespace Reversi
             CreateBoard();
             CreateDisks();
             SetupStartingBoard();
+            Loaded += GameWindow_Loaded;
+           
+        }
+
+        private void GameWindow_Loaded(object sender, RoutedEventArgs e)
+        {
             SetupGameDialog dialog = new SetupGameDialog();
             dialog.Owner = this;
             if (dialog.ShowDialog() == true)

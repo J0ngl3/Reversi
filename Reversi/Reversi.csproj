@@ -61,9 +61,9 @@
     <Compile Include="Model\MoveInfo.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Model\ValidMovesCalc.cs" />
-    <Compile Include="Player\ComputerPlayer.cs" />
-    <Compile Include="Player\HumanPlayer.cs" />
-    <Compile Include="Player\Player.cs" />
+    <Compile Include="Players\ComputerPlayer.cs" />
+    <Compile Include="Players\HumanPlayer.cs" />
+    <Compile Include="Players\Player.cs" />
     <Compile Include="Window\SetupGameDialog.xaml.cs">
       <DependentUpon>SetupGameDialog.xaml</DependentUpon>
     </Compile>

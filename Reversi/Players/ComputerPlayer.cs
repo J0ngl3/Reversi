@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reversi.Player
+namespace Reversi.Players
 {
     public class ComputerPlayer : Player
     {
-        public override bool IsHuman => true;
+        public override bool IsHuman => false;
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Reversi.Player;
+using Reversi.Players;
 
 namespace Reversi.Game
 {
@@ -23,6 +23,9 @@ namespace Reversi.Game
         //On it. //Mahdy
 
         public GameMode Mode { get; private set; }
+        public Player UserOne { get; private set; }
+        public Player UserTwo { get; private set; }
+        public GameBoard Board = new GameBoard();
         public GameManager(GameMode mode)
         {
             Mode = mode;
@@ -42,18 +45,11 @@ namespace Reversi.Game
                     break;
             }
         }
-        public GameBoard Board = new GameBoard();
-        Player UserOne = new Player();
-        Player UserTwo = new Player();
-        public Player PlayerChoice(Player One, Player Two)
+        
+        
+        /*public Player PlayerChoice(Player One, Player Two)
         {
 
-        }
-
-
-
-
-
-
+        }*/
     }
 }
