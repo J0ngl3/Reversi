@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reversi.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -31,6 +32,13 @@ namespace Reversi
             CreateBoard();
             CreateDisks();
             SetupStartingBoard();
+            SetupGameDialog dialog = new SetupGameDialog();
+            dialog.Owner = this;
+            if (dialog.ShowDialog() == true)
+            {
+                GameMode mode = dialog.SelectedGameMode;
+                GameManager gameManager = new GameManager(mode);
+            }
         }
         
         private void CreateBoard()

@@ -13,9 +13,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-            <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" Background="Black" Foreground="White" Height="60" BorderBrush="Black" BorderThickness="1">CHOOSE GAMEMODE</Label>
-        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="1" Height="60" Width="350" FontSize="30" Click="HVHOptionPicked">HUMAN VS HUMAN</Button>
-        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="2" Height="60" Width="350" FontSize="30">HUMAN VS CPU</Button>
-        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="3" Height="60" Width="350" FontSize="30">CPU VS CPU</Button>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" Background="Black" Foreground="White" Height="60" BorderBrush="Black" BorderThickness="1">CHOOSE GAMEMODE</Label>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="1" Height="60" Width="350" FontSize="30" Click="HVHOptionPicked" Content="HUMAN VS HUMAN"/>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="2" Height="60" Width="350" FontSize="30" Click="HVCOptionPicked" Content="HUMAN VS CPU"/>
+        <Button BorderBrush="Black" BorderThickness="2" Grid.Row="3" Height="60" Width="350" FontSize="30" Click="CVCOptionPicked" Content="CPU VS CPU"/>
     </Grid>
 </Window>

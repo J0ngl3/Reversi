@@ -26,6 +26,19 @@ namespace Reversi
         public void HVHOptionPicked(object sender, RoutedEventArgs e)
         {
             SelectedGameMode = GameMode.hvh;
+            DialogResult = true;
+        }
+
+        public void HVCOptionPicked(object sender, RoutedEventArgs e)
+        {
+            SelectedGameMode = GameMode.hvc;
+            DialogResult = true;
+        }
+
+        public void CVCOptionPicked(object sender, RoutedEventArgs e)
+        {
+            SelectedGameMode = GameMode.cvc;
+            DialogResult = true;
         }
         public GameMode SelectedGameMode
         {
