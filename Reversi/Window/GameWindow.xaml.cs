@@ -19,13 +19,22 @@ using System.Windows.Shapes;
 namespace Reversi
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Main game window.
+    /// Responsible for creating the board, the disks and opening the SetupGameDialog for gamemode choice.
+    /// handles user interaction with gameboard.
     /// </summary>
     
     public partial class GameWindow : Window
     {
-        //making ellipses in the grids, disks for game
+        /// <summary>
+        /// Holds and stores disk positions on the board. Board is 8x8.
+        /// </summary>
         private Ellipse[,] disks = new Ellipse[8, 8];
+        /// <summary>
+        /// Initializes, creates the board, creates the disks, launches gamemode selector dialog
+        /// Loaded += GameWindow_Loaded is a check so the main window is launched first. This is so dialog.Owner = this; can be used.
+        /// If dialog launches before Main Game Window, it can't be owned by the main window.
+        /// </summary>
         public GameWindow()
         {
             InitializeComponent();
@@ -35,7 +44,12 @@ namespace Reversi
             Loaded += GameWindow_Loaded;
            
         }
-
+        /// <summary>
+        /// Launches game setup dialog.
+        /// Used to create new GameManager with the selected mode.
+        /// </summary>
+        /// <param name="sender">Object that raised event.</param>
+        /// <param name="e">Event data</param>
         private void GameWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetupGameDialog dialog = new SetupGameDialog();
@@ -46,7 +60,9 @@ namespace Reversi
                 GameManager gameManager = new GameManager(mode);
             }
         }
-        
+        /// <summary>
+        /// creates the 8x8 board. First adds row & column definition.
+        /// </summary>
         private void CreateBoard()
         {
             for (int i = 0; i < 8; i++)
@@ -73,7 +89,11 @@ namespace Reversi
                 }
             }
         }
-
+        /// <summary>
+        /// Hander for Mouse click on a cell/gameboard square.
+        /// </summary>
+        /// <param name="sender">Event raiser</param>
+        /// <param name="e">Event data</param>
         private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Rectangle rectangle = (Rectangle)sender;
@@ -82,6 +102,10 @@ namespace Reversi
 
             MessageBox.Show($"Row: {row}, Column: {column}");
         }
+        /// <summary>
+        /// creates the disks.
+        /// uses the defined row & column definitions.
+        /// </summary>
         private void CreateDisks()
         {
             for (int row = 0; row < 8; row++)
@@ -111,7 +135,12 @@ namespace Reversi
             }
         }
         
-        //show black disks, Fill, border & visibility
+        /// <summary>
+        /// Displays black disk.
+        /// Used on a specific cell.
+        /// </summary>
+        /// <param name="row">board row</param>
+        /// <param name="column">board column</param>
         private void ShowBlackDisk(int row, int column)
         {
             disks[row, column].Fill = Brushes.Black;
@@ -120,7 +149,12 @@ namespace Reversi
             disks[row, column].Visibility = Visibility.Visible;
         }
 
-        
+        /// <summary>
+        /// Displays white disk.
+        /// Used on specific cell.
+        /// </summary>
+        /// <param name="row">board row</param>
+        /// <param name="column">board column</param>
         private void ShowWhiteDisk(int row, int column)
         {
             disks[row, column].Fill = Brushes.White;
@@ -128,12 +162,18 @@ namespace Reversi
             disks[row, column].StrokeThickness = 2;
             disks[row, column].Visibility = Visibility.Visible;
         }
-
+        /// <summary>
+        /// Reduces the visibilty of a disk to zero. Hides it completely.
+        /// </summary>
+        /// <param name="row">board row</param>
+        /// <param name="column">board column</param>
         private void ClearDisk(int row, int column)
         {
             disks[row, column].Visibility = Visibility.Collapsed;
         }
-
+        /// <summary>
+        /// Puts the start position disks on the board.
+        /// </summary>
         private void SetupStartingBoard()
         {
             ShowWhiteDisk(3, 3);
@@ -143,5 +183,3 @@ namespace Reversi
         }
     }
 }
-
-// HEJ HEJ MAHDY!!
