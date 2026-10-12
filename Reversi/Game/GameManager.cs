@@ -26,27 +26,30 @@ namespace Reversi.Game
         public Player UserOne { get; private set; }
         public Player UserTwo { get; private set; }
         public GameBoard Board = new GameBoard();
-        public GameManager(GameMode mode)
+        public GameManager(GameMode mode, string name1, string name2, bool human1, bool human2)
         {
             Mode = mode;
-            switch(mode)
+            if (human1)
             {
-                case GameMode.hvh:
-                    UserOne = new HumanPlayer();
-                    UserTwo = new HumanPlayer();
-                    break;
-                case GameMode.hvc:
-                    UserOne = new HumanPlayer();
-                    UserTwo = new ComputerPlayer();
-                    break;
-                case GameMode.cvc:
-                    UserOne = new ComputerPlayer();
-                    UserTwo = new ComputerPlayer();
-                    break;
+                UserOne = new HumanPlayer();
             }
+            else
+            {
+                UserOne = new ComputerPlayer();
+            }
+            if (human2)
+            {
+                UserTwo = new HumanPlayer();
+            }
+            else
+            {
+                UserTwo= new ComputerPlayer();
+            }
+            UserOne.Name = name1;
+            UserTwo.Name = name2;
         }
         
-        
+         
         /*public Player PlayerChoice(Player One, Player Two)
         {
 

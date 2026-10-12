@@ -1,6 +1,7 @@
 ﻿using Reversi.Game;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -26,6 +27,10 @@ namespace Reversi
     
     public partial class GameWindow : Window
     {
+        /// <summary>
+        /// Declare gameManger privately so it can be accessed by other methods.
+        /// </summary>
+        private GameManager gameManager;
         /// <summary>
         /// Holds and stores disk positions on the board. Board is 8x8.
         /// </summary>
@@ -56,8 +61,13 @@ namespace Reversi
             dialog.Owner = this;
             if (dialog.ShowDialog() == true)
             {
+                string name1 = dialog.NameOne;
+                string name2 = dialog.NameTwo;
+
+                bool human1 = dialog.Player1IsHuman;
+                bool human2 = dialog.Player2IsHuman;
                 GameMode mode = dialog.SelectedGameMode;
-                GameManager gameManager = new GameManager(mode);
+                gameManager = new GameManager(mode, name1, name2, human1, human2);
             }
         }
         /// <summary>

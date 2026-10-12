@@ -11,9 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 namespace Reversi
 {
+    
+     
     /// <summary>
     /// Assigns a value (enum) and defines the available gamemodes
     /// hvh = HUMAN VS HUMAN    --> 0
@@ -32,42 +33,50 @@ namespace Reversi
     /// </summary>
     public partial class SetupGameDialog : Window
     {
+        public string NameOne { get; private set; }
+        public string NameTwo { get; private set; }
+
+        public bool Player1IsHuman { get; private set; }
+        public bool Player2IsHuman { get; private set; }
+
+        public GameMode SelectedGameMode { get; private set; }
         /// <summary>
         /// Event handler for HUMAN VS HUMAN gamemode picked.
         /// </summary>
         /// <param name="sender">Button that raises the event</param>
         /// <param name="e">event data for Click</param>
-        public void HVHOptionPicked(object sender, RoutedEventArgs e)
+        
+        public void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            SelectedGameMode = GameMode.hvh;
+            if (P1Human.IsChecked == P1CPU.IsChecked || P2Human.IsChecked == P2CPU.IsChecked)
+            {
+                MessageBox.Show("Select one type for each player");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Player1Name.Text) || string.IsNullOrWhiteSpace(Player2Name.Text))
+                {
+                    MessageBox.Show("Enter both player names.");
+                    return;
+                }
+            NameOne = Player1Name.Text.Trim();
+            NameTwo = Player2Name.Text.Trim();
+            Player1IsHuman = P1Human.IsChecked == true;
+            Player2IsHuman = P2Human.IsChecked == true;
+
+            if (Player1IsHuman && Player2IsHuman)
+            {
+                SelectedGameMode = GameMode.hvh;
+            }
+            else if ((Player1IsHuman && !Player2IsHuman) || (!Player1IsHuman && Player2IsHuman))
+            {
+                SelectedGameMode = GameMode.hvc;
+            }
+            else if (!Player1IsHuman && !Player2IsHuman)
+            {
+                SelectedGameMode = GameMode.cvc;
+            }
             DialogResult = true;
-        }
-        /// <summary>
-        /// Event handler for HUMAN VS CPU gamemode picked.
-        /// </summary>
-        /// <param name="sender">Button that raises the event</param>
-        /// <param name="e">Event data for Click</param>
-        public void HVCOptionPicked(object sender, RoutedEventArgs e)
-        {
-            SelectedGameMode = GameMode.hvc;
-            DialogResult = true;
-        }
-        /// <summary>
-        /// Event handler for CPU VS CPU gamemode picked.
-        /// </summary>
-        /// <param name="sender">Button that raises the event</param>
-        /// <param name="e">Event data for Click</param>
-        public void CVCOptionPicked(object sender, RoutedEventArgs e)
-        {
-            SelectedGameMode = GameMode.cvc;
-            DialogResult = true;
-        }
-        /// <summary>
-        /// Used to get the gamemode selected by user
-        /// </summary>
-        public GameMode SelectedGameMode
-        {
-            get; private set;
         }
         /// <summary>
         /// Initialize SetupGameDialog
