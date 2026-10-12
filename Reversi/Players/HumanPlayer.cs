@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reversi.Player
+namespace Reversi.Players
 {
     public class HumanPlayer : Player
     {

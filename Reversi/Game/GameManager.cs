@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Reversi.Player;
+using Reversi.Players;
 
 namespace Reversi.Game
 {
@@ -19,17 +19,37 @@ namespace Reversi.Game
         // here I think Mr.Mahdy must do some stuff.
         // we gotta implement some code that is like
         // PRESS THE (HvH) button, both players
+            
+        //On it. //Mahdy
+
+        public GameMode Mode { get; private set; }
+        public Player UserOne { get; private set; }
+        public Player UserTwo { get; private set; }
         public GameBoard Board = new GameBoard();
-        Player UserOne = new Player();
-        public Player PlayerChoice(Player One, Player Two)
+        public GameManager(GameMode mode)
+        {
+            Mode = mode;
+            switch(mode)
+            {
+                case GameMode.hvh:
+                    UserOne = new HumanPlayer();
+                    UserTwo = new HumanPlayer();
+                    break;
+                case GameMode.hvc:
+                    UserOne = new HumanPlayer();
+                    UserTwo = new ComputerPlayer();
+                    break;
+                case GameMode.cvc:
+                    UserOne = new ComputerPlayer();
+                    UserTwo = new ComputerPlayer();
+                    break;
+            }
+        }
+        
+        
+        /*public Player PlayerChoice(Player One, Player Two)
         {
 
-        }
-
-
-
-
-
-
+        }*/
     }
 }

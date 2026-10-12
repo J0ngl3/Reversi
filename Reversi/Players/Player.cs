@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reversi.Model;
 
-namespace Reversi.Player
+namespace Reversi.Players
 {
     public abstract class Player
     {
