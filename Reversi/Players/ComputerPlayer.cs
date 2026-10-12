@@ -12,16 +12,18 @@ namespace Reversi.Player
     {
         public override bool IsHuman => false;
 
-        public override Dictionary<Position, List<Position>> MakeMove(Dictionary<Position, List<Position>> moves)
+        public override Task<Dictionary<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
         {
             List<Position> legalmoves = moves.Keys.ToList();
             int randomindex = Random.Shared.Next(legalmoves.Count);
             Position chosenmove = legalmoves[randomindex];
 
-            return new Dictionary<Position, List<Position>>
+            var selectedmove = new Dictionary<Position, List<Position>>
             {
                 {chosenmove, moves[chosenmove] }
             };
+
+            return Task.FromResult(selectedmove);
         }
     }
 }

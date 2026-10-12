@@ -11,6 +11,6 @@ namespace Reversi.Players
     {
         public abstract bool IsHuman { get; }
 
-        public abstract Dictionary<Position, List<Position>> MakeMove(Dictionary<Position, List<Position>> moves);
+        public abstract Task<Dictionary<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves);
     }
 }
