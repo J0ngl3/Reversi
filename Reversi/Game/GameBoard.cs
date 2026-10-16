@@ -45,20 +45,31 @@ namespace Reversi.Game
         public void ApplyMove(Position pos, PlayerColor player, List<Position> outflanked)
         {
             foreach (Position disc in outflanked)
-                {
-                    Board[disc.Row, disc.Col] = player;
-                    DiscCount[player] += 1;
-                    DiscCount[player.Opponent()] -= 1; //decrease opponent's count when disk is flipped.
-                }
-                Board[pos.Row, pos.Col] = player;
+            {
+                Board[disc.Row, disc.Col] = player;
                 DiscCount[player] += 1;
+                DiscCount[player.Opponent()] -= 1; //decrease opponent's count when disk is flipped.
+            }
+            Board[pos.Row, pos.Col] = player;
+            DiscCount[player] += 1;
 
-                //PassTurn(player);
+            //PassTurn(player);
         }
-        
-        // public void PassTurn(PlayerColor player)
-        // {
-        //     CurrentPlayer = player.Opponent();
-        // }
+
+        public PlayerColor InTheLead()
+        {
+            if (DiscCount[PlayerColor.White] == DiscCount[PlayerColor.Black])
+            {
+                return PlayerColor.None;
+            }
+            else if (DiscCount[PlayerColor.White] > DiscCount[PlayerColor.Black])
+            {
+                return PlayerColor.White;
+            }
+            else
+            {
+                return PlayerColor.Black;
+            }
+        }
     }
 }

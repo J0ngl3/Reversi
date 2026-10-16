@@ -57,6 +57,20 @@ namespace Reversi.Game
             OtherUser = UserTwo;
         }
 
+        public void PassTurn()
+        {
+            if (CurrentUser == UserOne)
+            {
+                CurrentUser = UserTwo;
+                OtherUser = UserOne;
+            }
+            else
+            {
+                CurrentUser = UserTwo;
+                OtherUser = UserOne;
+            }
+        }
+
         public async Task GameStarted()
         {
             while (true)
@@ -68,40 +82,17 @@ namespace Reversi.Game
                     if (!OtherUser.AbleToMakeMove)
                     {
                         GameOver = true;
-                        if(gameBoard.DiscCount[PlayerColor.White] == gameBoard.DiscCount[PlayerColor.Black])
-                        {
-                            Tie = true;
-                            // send into to window that game is a tie and over
-                        }
-                        else if (gameBoard.DiscCount[PlayerColor.White] > gameBoard.DiscCount[PlayerColor.Black])
-                        {
-                            Winner = PlayerColor.White;
-                        }
-                        else
-                        {
-                            Winner = PlayerColor.Black;
-                        }
-
+                        Winner = gameBoard.InTheLead();
+                        // if NONE, it's a tie, and report that. Otherwise, display the color that won
                         // make sure the winner window is displayed
                     }
-                    break;
+                    PassTurn();
+                    continue;
                 }    
 
                 KeyValuePair<Position, List<Position>> UserMove = 
                     (await CurrentUser.MakeMove(validMoves));
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
-
-                if (CurrentUser == UserOne)
-                {
-                    CurrentUser = UserTwo;
-                    OtherUser = UserOne;
-                }
-                else
-                {
-                    CurrentUser = UserTwo;
-                    OtherUser = UserOne;
-                }
-
             }
         }
     }
