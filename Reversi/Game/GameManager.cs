@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Reversi.Players;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Reversi.Game
 {
@@ -15,6 +16,7 @@ namespace Reversi.Game
         public Player OtherUser { get; private set; }
         public bool GameOver { get; private set; }
         public PlayerColor Winner { get; private set; }
+        public bool Tie { get; private set; }
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
         public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
 
@@ -50,6 +52,7 @@ namespace Reversi.Game
 
             UserOne.playerColor = PlayerColor.Black;
             UserTwo.playerColor = PlayerColor.White;
+            
             CurrentUser = UserOne;
             OtherUser = UserTwo;
         }
@@ -59,13 +62,27 @@ namespace Reversi.Game
             while (true)
             {
                 Dictionary<Position, List< Position >> validMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
-                if (validMoves.Count < 0)
+                if (!validMoves.Any())
                 {
                     CurrentUser.AbleToMakeMove = false;
                     if (!OtherUser.AbleToMakeMove)
                     {
                         GameOver = true;
-                        Winner = CurrentUser.playerColor;
+                        if(gameBoard.DiscCount[PlayerColor.White] == gameBoard.DiscCount[PlayerColor.Black])
+                        {
+                            Tie = true;
+                            // send into to window that game is a tie and over
+                        }
+                        else if (gameBoard.DiscCount[PlayerColor.White] > gameBoard.DiscCount[PlayerColor.Black])
+                        {
+                            Winner = PlayerColor.White;
+                        }
+                        else
+                        {
+                            Winner = PlayerColor.Black;
+                        }
+
+                        // make sure the winner window is displayed
                     }
                     break;
                 }    
@@ -73,6 +90,18 @@ namespace Reversi.Game
                 KeyValuePair<Position, List<Position>> UserMove = 
                     (await CurrentUser.MakeMove(validMoves));
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
+
+                if (CurrentUser == UserOne)
+                {
+                    CurrentUser = UserTwo;
+                    OtherUser = UserOne;
+                }
+                else
+                {
+                    CurrentUser = UserTwo;
+                    OtherUser = UserOne;
+                }
+
             }
         }
     }
