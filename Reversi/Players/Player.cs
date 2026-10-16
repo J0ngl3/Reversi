@@ -13,8 +13,9 @@ namespace Reversi.Players
     public abstract class Player
     {
         public string Name { get; set; }
-        public abstract bool IsHuman { get; }
+        // public abstract bool IsHuman { get; }
         public PlayerColor playerColor { get; set; }
+        public bool AbleToMakeMove { get; set;}
 
         public abstract Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves);
     }

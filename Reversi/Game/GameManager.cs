@@ -13,6 +13,7 @@ namespace Reversi.Game
     public class GameManager
     {
         public Player CurrentUser { get; private set; }
+        public Player OtherUser { get; private set; }
         public bool GameOver { get; private set; }
         public PlayerColor Winner { get; private set; }
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
@@ -51,6 +52,7 @@ namespace Reversi.Game
             UserOne.playerColor = PlayerColor.Black;
             UserTwo.playerColor = PlayerColor.White;
             CurrentUser = UserOne;
+            OtherUser = UserTwo;
         }
 
         public async Task GameStarted()
@@ -58,11 +60,20 @@ namespace Reversi.Game
             while (true)
             {
                 Dictionary<Position, List< Position >> validMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
+                if (validMoves.Count < 0)
+                {
+                    CurrentUser.AbleToMakeMove = false;
+                    if (!OtherUser.AbleToMakeMove)
+                    {
+                        GameOver = true;
+                        Winner = CurrentUser.playerColor;
+                    }
+                    break;
+                }    
 
                 KeyValuePair<Position, List<Position>> UserMove = 
                     (await CurrentUser.MakeMove(validMoves));
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
-
             }
         }
     }

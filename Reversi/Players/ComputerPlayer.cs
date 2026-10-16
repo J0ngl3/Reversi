@@ -12,10 +12,15 @@ namespace Reversi.Players
     /// </summary>
     public class ComputerPlayer : Player
     {
-        public override bool IsHuman => false;
-        public PlayerColor playerColor;
+        // public override bool IsHuman => false;
         public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
         {
+            if (moves.Count < 1)
+            {
+                AbleToMakeMove = false;
+                return Task.FromResult(new KeyValuePair<Position, List<Position>>());
+            }
+
             List<Position> legalmoves = moves.Keys.ToList();
             int randomindex = Random.Shared.Next(legalmoves.Count);
             Position chosenmove = legalmoves[randomindex];
