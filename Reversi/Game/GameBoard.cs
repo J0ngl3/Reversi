@@ -17,7 +17,7 @@ namespace Reversi.Game
         public PlayerColor[,] Board { get; }
 
         public Dictionary<PlayerColor, int> DiscCount { get; }
-        public PlayerColor CurrentPlayer;
+        // public PlayerColor CurrentPlayer;
 
         /// <summary>
         /// Applies the cross pattern for the four starting discs and sets
@@ -38,7 +38,7 @@ namespace Reversi.Game
                 { PlayerColor.Black, 2}
             };
 
-            CurrentPlayer = PlayerColor.Black;
+            // CurrentPlayer = PlayerColor.Black;
 
         }
 
@@ -53,12 +53,12 @@ namespace Reversi.Game
                 Board[pos.Row, pos.Col] = player;
                 DiscCount[player] += 1;
 
-                PassTurn(player);
+                //PassTurn(player);
         }
         
-        public void PassTurn(PlayerColor player)
-        {
-            CurrentPlayer = player.Opponent();
-        }
+        // public void PassTurn(PlayerColor player)
+        // {
+        //     CurrentPlayer = player.Opponent();
+        // }
     }
 }
