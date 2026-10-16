@@ -7,7 +7,7 @@ using Reversi.Game;
 
 namespace Reversi.Model
 {
-    internal class ValidMovesCalc
+    public class ValidMovesCalc
     {
         public int Rows = 8;
         public int Cols = 8;

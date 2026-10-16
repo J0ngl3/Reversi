@@ -13,11 +13,11 @@ namespace Reversi.Players
     public class HumanPlayer : Player
     {
         public override bool IsHuman => true;
-
+        public PlayerColor playerColor;
         private Dictionary<Position, List<Position>> LegalMoves;
         private TaskCompletionSource<Dictionary<Position, List<Position>>> MoveCompletion;
 
-        public override Task<Dictionary<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
+        public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
         {
             LegalMoves = moves;
             MoveCompletion = new TaskCompletionSource<Dictionary<Position, List<Position>>>

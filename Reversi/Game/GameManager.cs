@@ -6,26 +6,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Reversi.Players;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Reversi.Game
 {
     public class GameManager
     {
-        public Color CurrentPlayer { get; private set;}
+        public Player CurrentUser { get; private set; }
         public bool GameOver { get; private set; }
-        public Color Winner { get; private set; }
+        public PlayerColor Winner { get; private set; }
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
+        public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
 
         // here I think Mr.Mahdy must do some stuff.
-        // we gotta implement some code that is like
-        // PRESS THE (HvH) button, both players
-            
+
         //On it. //Mahdy
 
         public GameMode Mode { get; private set; }
         public Player UserOne { get; private set; }
         public Player UserTwo { get; private set; }
-        public GameBoard Board = new GameBoard();
+        public GameBoard gameBoard = new GameBoard();
         public GameManager(GameMode mode, string name1, string name2, bool human1, bool human2)
         {
             Mode = mode;
@@ -43,16 +43,27 @@ namespace Reversi.Game
             }
             else
             {
-                UserTwo= new ComputerPlayer();
+                UserTwo = new ComputerPlayer();
             }
             UserOne.Name = name1;
             UserTwo.Name = name2;
-        }
-        
-         
-        /*public Player PlayerChoice(Player One, Player Two)
-        {
 
-        }*/
+            UserOne.playerColor = PlayerColor.Black;
+            UserTwo.playerColor = PlayerColor.White;
+            CurrentUser = UserOne;
+        }
+
+        public async Task GameStarted()
+        {
+            while (true)
+            {
+                Dictionary<Position, List< Position >> validMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
+
+                KeyValuePair<Position, List<Position>> UserMove = 
+                    (await CurrentUser.MakeMove(validMoves));
+                gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
+
+            }
+        }
     }
 }
