@@ -93,7 +93,7 @@ namespace Reversi.Game
 
                 KeyValuePair<Position, List<Position>> UserMove = 
                     (await CurrentUser.MakeMove(validMoves));
-                gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
+                gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value)
             }
         }
     }
