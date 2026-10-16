@@ -14,7 +14,7 @@ namespace Reversi.Players
     {
         // public override bool IsHuman => true;
         private Dictionary<Position, List<Position>> LegalMoves;
-        private TaskCompletionSource<Dictionary<Position, List<Position>>> MoveCompletion;
+        private TaskCompletionSource<KeyValuePair<Position, List<Position>>> MoveCompletion;
 
         public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
         {
@@ -25,7 +25,7 @@ namespace Reversi.Players
             }
 
             LegalMoves = moves;
-            MoveCompletion = new TaskCompletionSource<Dictionary<Position, List<Position>>>();
+            MoveCompletion = new TaskCompletionSource<KeyValuePair<Position, List<Position>>>();
             return MoveCompletion.Task;
         }
 
@@ -33,10 +33,10 @@ namespace Reversi.Players
         {
             if (LegalMoves != null && MoveCompletion != null && LegalMoves.TryGetValue(position, out var outflanked))
             {
-                var selectedMove = new Dictionary<Position, List<Position>>
-                {
-                    {position,outflanked }
-                };
+                var selectedMove = new KeyValuePair<Position, List<Position>>
+                (
+                    position, outflanked);
+                
 
                 MoveCompletion.TrySetResult(selectedMove);
                 LegalMoves = null;

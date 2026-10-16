@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Reversi.Players;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Reversi.Game
 {

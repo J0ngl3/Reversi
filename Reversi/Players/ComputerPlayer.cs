@@ -12,6 +12,7 @@ namespace Reversi.Players
     /// </summary>
     public class ComputerPlayer : Player
     {
+        private static readonly Random random = new Random(); //declare
         // public override bool IsHuman => false;
         public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
         {
@@ -19,18 +20,20 @@ namespace Reversi.Players
             {
                 AbleToMakeMove = false;
                 return Task.FromResult(new KeyValuePair<Position, List<Position>>());
-            }
 
+            }
+            AbleToMakeMove = true;
             List<Position> legalmoves = moves.Keys.ToList();
-            int randomindex = Random.Shared.Next(legalmoves.Count);
+            int randomindex = random.Next(legalmoves.Count);
             Position chosenmove = legalmoves[randomindex];
 
-            var selectedmove = new Dictionary<Position, List<Position>>
-            {
-                {chosenmove, moves[chosenmove] }
-            };
+            var selectedmove = new KeyValuePair<Position, List<Position>>
+            (
+                chosenmove, moves[chosenmove]
+                );
 
             return Task.FromResult(selectedmove);
+
         }
     }
 }
