@@ -175,7 +175,7 @@ namespace Reversi
                     {
                         ShowBlackDisk(row, column);
                     }
-                    if (color == PlayerColor.White)
+                    else if (color == PlayerColor.White)
                     {
                         ShowWhiteDisk(row, column);
                     }

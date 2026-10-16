@@ -19,6 +19,7 @@ namespace Reversi.Game
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
         public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
         public event Action BoardRefreshed;
+        public event Action GameFinished;
 
         // here I think Mr.Mahdy must do some stuff.
 
@@ -75,7 +76,12 @@ namespace Reversi.Game
         {
             while (true)
             {
-                ValidMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
+                Task task = Task.Run(() =>
+                {
+                    ValidMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
+                });
+                await task;
+                
                 if (!ValidMoves.Any())
                 {
                     CurrentUser.AbleToMakeMove = false;
@@ -95,8 +101,11 @@ namespace Reversi.Game
                 KeyValuePair<Position, List<Position>> UserMove = 
                     (await CurrentUser.MakeMove(ValidMoves));
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
+                
                 // create an event that is sent to XAML and mahdy.
                 PassTurn();
+                BoardRefreshed?.Invoke();
+                GameFinished?.Invoke();
             }
         }
     }

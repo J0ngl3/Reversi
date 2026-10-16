@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reversi.Players
@@ -23,16 +24,21 @@ namespace Reversi.Players
 
             }
             AbleToMakeMove = true;
-            List<Position> legalmoves = moves.Keys.ToList();
-            int randomindex = random.Next(legalmoves.Count);
-            Position chosenmove = legalmoves[randomindex];
+            return Task.Run(() =>
+            {
+                Thread.Sleep(250);
+                List<Position> legalmoves = moves.Keys.ToList();
+                int randomindex = random.Next(legalmoves.Count);
+                Position chosenmove = legalmoves[randomindex];
 
-            var selectedmove = new KeyValuePair<Position, List<Position>>
-            (
-                chosenmove, moves[chosenmove]
-                );
+                var selectedmove = new KeyValuePair<Position, List<Position>>
+                (
+                    chosenmove, moves[chosenmove]
+                    );
 
-            return Task.FromResult(selectedmove);
+                return selectedmove;
+            });
+            
 
         }
     }
