@@ -72,6 +72,7 @@ namespace Reversi
                 gameManager = new GameManager(mode, name1, name2, human1, human2);
 
                 gameManager.BoardRefreshed += Refresh;
+                gameManager.GameFinished += ShowGameResult;
                 await gameManager.GameStarted();
             }
         }
@@ -186,6 +187,21 @@ namespace Reversi
                 }
             }
         }
+
+        private void ShowGameResult()
+        {
+            if (gameManager.GameOver == true)
+            {
+                if (gameManager.Winner == PlayerColor.None)
+                {
+                    MessageBox.Show("DRAW!");
+                }
+                else
+                {
+                    MessageBox.Show($"{gameManager.Winner} WINS!");
+                }
+            }  
+        }
         /// <summary>
         /// Displays black disk.
         /// Used on a specific cell.
@@ -212,6 +228,11 @@ namespace Reversi
             disks[row, column].Stroke = Brushes.Black;
             disks[row, column].StrokeThickness = 2;
             disks[row, column].Visibility = Visibility.Visible;
+        }
+
+        private void ShowGrayDisk(int row, int column)
+        {
+
         }
         /// <summary>
         /// Reduces the visibilty of a disk to zero. Hides it completely.
