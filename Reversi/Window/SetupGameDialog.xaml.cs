@@ -21,10 +21,7 @@ namespace Reversi
     /// hvc = HUMAN VS CPU      --> 1
     /// cvc = CPU VS CPU        --> 2
     /// </summary>
-    public enum GameMode
-    {
-        hvh, hvc, cvc
-    }
+    
 
     /// <summary>
     /// The main popup dialog used for selecting a gamemode and passing the value.
@@ -39,7 +36,7 @@ namespace Reversi
         public bool Player1IsHuman { get; private set; }
         public bool Player2IsHuman { get; private set; }
 
-        public GameMode SelectedGameMode { get; private set; }
+        
         /// <summary>
         /// Event handler for HUMAN VS HUMAN gamemode picked.
         /// </summary>
@@ -64,18 +61,6 @@ namespace Reversi
             Player1IsHuman = P1Human.IsChecked == true;
             Player2IsHuman = P2Human.IsChecked == true;
 
-            if (Player1IsHuman && Player2IsHuman)
-            {
-                SelectedGameMode = GameMode.hvh;
-            }
-            else if ((Player1IsHuman && !Player2IsHuman) || (!Player1IsHuman && Player2IsHuman))
-            {
-                SelectedGameMode = GameMode.hvc;
-            }
-            else if (!Player1IsHuman && !Player2IsHuman)
-            {
-                SelectedGameMode = GameMode.cvc;
-            }
             DialogResult = true;
         }
         /// <summary>

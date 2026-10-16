@@ -37,6 +37,7 @@ namespace Reversi
         /// Holds and stores disk positions on the board. Board is 8x8.
         /// </summary>
         private Ellipse[,] disks = new Ellipse[8, 8];
+        private Ellipse[,] legalDisks = new Ellipse[8, 8];
         /// <summary>
         /// Initializes, creates the board, creates the disks, launches gamemode selector dialog
         /// Loaded += GameWindow_Loaded is a check so the main window is launched first. This is so dialog.Owner = this; can be used.
@@ -49,7 +50,6 @@ namespace Reversi
             CreateDisks();
             SetupStartingBoard();
             Loaded += GameWindow_Loaded;
-           
         }
         /// <summary>
         /// Launches game setup dialog.
@@ -68,8 +68,7 @@ namespace Reversi
 
                 bool human1 = dialog.Player1IsHuman;
                 bool human2 = dialog.Player2IsHuman;
-                GameMode mode = dialog.SelectedGameMode;
-                gameManager = new GameManager(mode, name1, name2, human1, human2);
+                gameManager = new GameManager(name1, name2, human1, human2);
 
                 gameManager.BoardRefreshed += Refresh;
                 gameManager.GameFinished += ShowGameResult;
@@ -126,7 +125,11 @@ namespace Reversi
                 {
                     if (pos.Row == row && pos.Col == column)
                     {
-                        human.TrySelectMove(pos);
+                        if (human.TrySelectMove(pos))
+                        {
+                            ClearLegalMoves();
+                        }
+                        
                         break;
                     }
                 }
@@ -157,14 +160,35 @@ namespace Reversi
                             Opacity = 0.8
                         }
                     };
+
                     Grid.SetRow(disk, row);
                     Grid.SetColumn(disk, column);
                     GameGrid.Children.Add(disk);
                     disks[row, column] = disk;
+                    Ellipse legalDisks = new Ellipse
+                    {
+                        Width = 21,
+                        Height = 21,
+                        Visibility = Visibility.Collapsed,
+                        //mouseclicks must go through the disk to the rectangle under
+                        IsHitTestVisible = false,
+                        Effect = new DropShadowEffect
+                        {
+                            Color = Colors.Black,
+                            BlurRadius = 8,
+                            ShadowDepth = 5,
+                            Opacity = 0.8
+                        }
+                    };
+                    Grid.SetRow(legalDisks, row);
+                    Grid.SetColumn(legalDisks, column);
+                    GameGrid.Children.Add(legalDisks);
+                    this.legalDisks[row, column] = legalDisks;
                 }
             }
         }
-        
+
+       
         private void Refresh()
         {
             for (int row = 0; row  < 8; row++)
@@ -186,6 +210,7 @@ namespace Reversi
                     }
                 }
             }
+            ShowLegalMoves();
         }
 
         private void ShowGameResult()
@@ -232,7 +257,10 @@ namespace Reversi
 
         private void ShowGrayDisk(int row, int column)
         {
-
+            legalDisks[row, column].Fill = Brushes.Gray;
+            legalDisks[row, column].Stroke = Brushes.Black;
+            legalDisks[row, column].StrokeThickness = 2;
+            legalDisks[row, column].Visibility = Visibility.Visible;
         }
         /// <summary>
         /// Reduces the visibilty of a disk to zero. Hides it completely.
@@ -246,12 +274,40 @@ namespace Reversi
         /// <summary>
         /// Puts the start position disks on the board.
         /// </summary>
+        /// 
+        private void ClearGrayDisk(int row, int column)
+        {
+            legalDisks[row, column].Visibility = Visibility.Collapsed;
+        }
         private void SetupStartingBoard()
         {
             ShowWhiteDisk(3, 3);
             ShowBlackDisk(3, 4);
             ShowWhiteDisk(4, 4);
             ShowBlackDisk(4, 3);
+        }
+        
+        private void ShowLegalMoves()
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                for (int column = 0; column < 8; column++)
+                {
+                    ClearGrayDisk(row, column);
+                }
+            }
+            foreach (Position pos in gameManager.ValidMoves.Keys)
+            {
+                ShowGrayDisk(pos.Row, pos.Col);
+            }
+        }
+
+        private void ClearLegalMoves()
+        {
+            foreach (Position pos in gameManager.ValidMoves.Keys)
+            {
+                ClearGrayDisk(pos.Row, pos.Col);
+            }
         }
     }
 }

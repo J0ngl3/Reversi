@@ -26,7 +26,7 @@ namespace Reversi.Players
             AbleToMakeMove = true;
             return Task.Run(() =>
             {
-                Thread.Sleep(250);
+                Thread.Sleep(1000);
                 List<Position> legalmoves = moves.Keys.ToList();
                 int randomindex = random.Next(legalmoves.Count);
                 Position chosenmove = legalmoves[randomindex];
