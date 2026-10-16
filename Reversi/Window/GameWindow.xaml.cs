@@ -1,4 +1,6 @@
 ﻿using Reversi.Game;
+using Reversi.Model;
+using Reversi.Players;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,7 +57,7 @@ namespace Reversi
         /// </summary>
         /// <param name="sender">Object that raised event.</param>
         /// <param name="e">Event data</param>
-        private void GameWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void GameWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetupGameDialog dialog = new SetupGameDialog();
             dialog.Owner = this;
@@ -68,6 +70,9 @@ namespace Reversi
                 bool human2 = dialog.Player2IsHuman;
                 GameMode mode = dialog.SelectedGameMode;
                 gameManager = new GameManager(mode, name1, name2, human1, human2);
+
+                gameManager.BoardRefreshed += Refresh;
+                await gameManager.GameStarted();
             }
         }
         /// <summary>
@@ -106,11 +111,25 @@ namespace Reversi
         /// <param name="e">Event data</param>
         private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Rectangle rectangle = (Rectangle)sender;
-            int row = Grid.GetRow(rectangle);
-            int column = Grid.GetColumn(rectangle);
+            if (gameManager == null || gameManager.GameOver)
+            {
+                return;
+            }
+            if (gameManager.CurrentUser is HumanPlayer human)
+            {
+                Rectangle rectangle = (Rectangle)sender;
+                int row = Grid.GetRow(rectangle);
+                int column = Grid.GetColumn(rectangle);
 
-            MessageBox.Show($"Row: {row}, Column: {column}");
+                foreach (Position pos in gameManager.ValidMoves.Keys)
+                {
+                    if (pos.Row == row && pos.Col == column)
+                    {
+                        human.TrySelectMove(pos);
+                        break;
+                    }
+                }
+            }
         }
         /// <summary>
         /// creates the disks.
@@ -145,6 +164,28 @@ namespace Reversi
             }
         }
         
+        private void Refresh()
+        {
+            for (int row = 0; row  < 8; row++)
+            {
+                for (int column = 0; column < 8; column++)
+                {
+                    PlayerColor color = gameManager.gameBoard.Board[row, column];
+                    if (color == PlayerColor.Black)
+                    {
+                        ShowBlackDisk(row, column);
+                    }
+                    if (color == PlayerColor.White)
+                    {
+                        ShowWhiteDisk(row, column);
+                    }
+                    else
+                    {
+                        ClearDisk(row, column);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Displays black disk.
         /// Used on a specific cell.

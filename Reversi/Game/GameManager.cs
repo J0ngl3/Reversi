@@ -19,6 +19,7 @@ namespace Reversi.Game
         public bool Tie { get; private set; }
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
         public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
+        public event Action BoardRefreshed;
 
         // here I think Mr.Mahdy must do some stuff.
 
