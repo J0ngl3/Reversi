@@ -85,7 +85,7 @@ namespace Reversi.Game
                 if (!ValidMoves.Any())
                 {
                     CurrentUser.AbleToMakeMove = false;
-                    if (!OtherUser.AbleToMakeMove)
+                    if(!validMovesCalc.GetValidMoves(OtherUser.playerColor, gameBoard.Board).Any())
                     {
                         GameOver = true;
                         Winner = gameBoard.InTheLead();
