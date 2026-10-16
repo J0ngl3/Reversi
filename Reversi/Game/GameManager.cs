@@ -16,7 +16,6 @@ namespace Reversi.Game
         public Player OtherUser { get; private set; }
         public bool GameOver { get; private set; }
         public PlayerColor Winner { get; private set; }
-        public bool Tie { get; private set; }
         public Dictionary<Position, List<Position>> ValidMoves { get; private set; }
         public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
 
@@ -66,8 +65,8 @@ namespace Reversi.Game
             }
             else
             {
-                CurrentUser = UserTwo;
-                OtherUser = UserOne;
+                CurrentUser = UserOne;
+                OtherUser = UserTwo;
             }
         }
 
@@ -75,8 +74,8 @@ namespace Reversi.Game
         {
             while (true)
             {
-                Dictionary<Position, List< Position >> validMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
-                if (!validMoves.Any())
+                ValidMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
+                if (!ValidMoves.Any())
                 {
                     CurrentUser.AbleToMakeMove = false;
                     if (!OtherUser.AbleToMakeMove)
@@ -85,14 +84,18 @@ namespace Reversi.Game
                         Winner = gameBoard.InTheLead();
                         // if NONE, it's a tie, and report that. Otherwise, display the color that won
                         // make sure the winner window is displayed
+                        // end the game here
+                        break;
                     }
                     PassTurn();
                     continue;
-                }    
-
+                }
+                CurrentUser.AbleToMakeMove = true;
                 KeyValuePair<Position, List<Position>> UserMove = 
-                    (await CurrentUser.MakeMove(validMoves));
+                    (await CurrentUser.MakeMove(ValidMoves));
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
+                // create an event that is sent to XAML and mahdy.
+                PassTurn();
             }
         }
     }
