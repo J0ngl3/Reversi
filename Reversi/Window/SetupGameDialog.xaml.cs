@@ -69,6 +69,15 @@ namespace Reversi
         public SetupGameDialog()
         {
             InitializeComponent();
+            Closing += SetupGameDialog_Closing;
+        }
+
+        private void SetupGameDialog_Closing(object  sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DialogResult != true)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

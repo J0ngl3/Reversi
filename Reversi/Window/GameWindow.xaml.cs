@@ -211,6 +211,7 @@ namespace Reversi
                 }
             }
             ShowLegalMoves();
+            ShowCurrentPlayerTurn();
         }
 
         private void ShowGameResult()
@@ -226,6 +227,11 @@ namespace Reversi
                     MessageBox.Show($"{gameManager.Winner} WINS!");
                 }
             }  
+        }
+
+        private void ShowCurrentPlayerTurn()
+        {
+            MessageBox.Show($"It's {gameManager.CurrentUser.Name}'s turn! Their colour is {gameManager.CurrentUser.playerColor}.");
         }
         /// <summary>
         /// Displays black disk.

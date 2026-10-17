@@ -104,8 +104,9 @@ namespace Reversi.Game
                 
                 // create an event that is sent to XAML and mahdy.
                 PassTurn();
-                GameFinished?.Invoke();
+                
             }
+            GameFinished?.Invoke();
         }
     }
 }
