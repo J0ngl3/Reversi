@@ -10,8 +10,13 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Reversi.Game
 {
+    /// <summary>
+    /// Represents the general manager of the game, includes the players, game board, controlling move turns, determines the winner,
+    /// handles the interaction between players and game board, and raises events to the UI
+    /// </summary>
     public class GameManager
     {
+        // all the properties and events
         public event Action BoardRefreshed;
         public Player CurrentUser { get; private set; }
         public Player OtherUser { get; private set; }
@@ -21,16 +26,23 @@ namespace Reversi.Game
         public ValidMovesCalc validMovesCalc = new ValidMovesCalc();
         public event Action GameFinished;
 
-        // here I think Mr.Mahdy must do some stuff.
 
-        //On it. //Mahdy
-
-        //public GameMode Mode { get; private set; }
+        // the two players, either human or computer
         public Player UserOne { get; private set; }
         public Player UserTwo { get; private set; }
+        // the game board itself
         public GameBoard gameBoard = new GameBoard();
+
+        /// <summary>
+        /// Constructor for the class, takes in names of the players and whether they are human or computer.
+        /// </summary>
+        /// <param name="name1">name of the first player</param>
+        /// <param name="name2">name of the second player</param>
+        /// <param name="human1">human or computer bool for userOne</param>
+        /// <param name="human2">human or computer bool for userTwo</param>
         public GameManager(string name1, string name2, bool human1, bool human2)
         {
+            // UserOne is always black and goes first
             if (human1)
             {
                 UserOne = new HumanPlayer();
@@ -57,6 +69,9 @@ namespace Reversi.Game
             OtherUser = UserTwo;
         }
 
+        /// <summary>
+        /// Swaps the current and other user, called after a move is made or if a player has no valid moves
+        /// </summary>
         public void PassTurn()
         {
             if (CurrentUser == UserOne)
@@ -71,19 +86,28 @@ namespace Reversi.Game
             }
         }
 
+        /// <summary>
+        /// the main game loop, runs game until no valid moves are available for either player,
+        /// then determines winner and raises GameFinished event to the UI
+        /// </summary>
+        /// <returns> task that can be awaited so the UI can remain responsive </returns>
         public async Task GameStarted()
         {
             while (true)
             {
+                // creates a new task that allows the UI to not freeze when calculating valid moves
                 Task task = Task.Run(() =>
                 {
                     ValidMoves = validMovesCalc.GetValidMoves(CurrentUser.playerColor, gameBoard.Board);
                 });
                 await task;
+                // refreshes the UI board to reflect where the user can make a move
                 BoardRefreshed?.Invoke();
 
+                // check if the user can make a move, and determine whether the game is over.
                 if (!ValidMoves.Any())
                 {
+                    // set the bool
                     CurrentUser.AbleToMakeMove = false;
                     if(!validMovesCalc.GetValidMoves(OtherUser.playerColor, gameBoard.Board).Any())
                     {
