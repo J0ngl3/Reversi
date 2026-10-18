@@ -13,19 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 namespace Reversi
 {
-    
-     
     /// <summary>
-    /// Assigns a value (enum) and defines the available gamemodes
-    /// hvh = HUMAN VS HUMAN    --> 0
-    /// hvc = HUMAN VS CPU      --> 1
-    /// cvc = CPU VS CPU        --> 2
-    /// </summary>
-    
-
-    /// <summary>
-    /// The main popup dialog used for selecting a gamemode and passing the value.
-    /// The buttons assign a value defined by enum GameMdoe and passes it to SelectedGameMode.
+    /// The main popup dialog used for inputing player names, player types, if they're human or not(bool).
     /// It closes the dialog safely afterwards.
     /// </summary>
     public partial class SetupGameDialog : Window
@@ -35,14 +24,13 @@ namespace Reversi
 
         public bool Player1IsHuman { get; private set; }
         public bool Player2IsHuman { get; private set; }
-
         
         /// <summary>
-        /// Event handler for HUMAN VS HUMAN gamemode picked.
+        /// Verifies that player names, player type selection are valid.
+        /// Saves them.
         /// </summary>
-        /// <param name="sender">Button that raises the event</param>
-        /// <param name="e">event data for Click</param>
-        
+        /// <param name="sender">Confirm button clicked.</param>
+        /// <param name="e">How to handle.</param>
         public void Confirm_Click(object sender, RoutedEventArgs e)
         {
             if (P1Human.IsChecked == P1CPU.IsChecked || P2Human.IsChecked == P2CPU.IsChecked)
@@ -63,6 +51,7 @@ namespace Reversi
 
             DialogResult = true;
         }
+
         /// <summary>
         /// Initialize SetupGameDialog
         /// </summary>
@@ -72,6 +61,12 @@ namespace Reversi
             Closing += SetupGameDialog_Closing;
         }
 
+        /// <summary>
+        /// If the X is clicked instead of confirm, it refuses to exit.
+        /// Prevents player from reaching the game without inputing names and playertypes.
+        /// </summary>
+        /// <param name="sender">If forcefully closing</param>
+        /// <param name="e">handles it. Doesn't allow.</param>
         private void SetupGameDialog_Closing(object  sender, System.ComponentModel.CancelEventArgs e)
         {
             if (DialogResult != true)
