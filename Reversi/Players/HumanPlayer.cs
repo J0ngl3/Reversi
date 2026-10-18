@@ -1,9 +1,10 @@
-﻿using Reversi.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reversi.Game;
+using Reversi.Model;
 
 namespace Reversi.Players
 {
@@ -21,7 +22,7 @@ namespace Reversi.Players
         /// </summary>
         /// <param name="moves"> the valid moves the user could make</param>
         /// <returns> a task that contains the move the user wants to make</returns>
-        public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
+        public override Task<KeyValuePair<Position, List<Position>>> MakeMove(GameBoard boardCopy, Dictionary<Position, List<Position>> moves)
         {
             // if the user doesn't have any valid moves, return a task with an empty key value pair
             if (!moves.Any())

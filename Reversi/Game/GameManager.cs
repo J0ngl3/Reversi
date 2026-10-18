@@ -123,9 +123,12 @@ namespace Reversi.Game
                     continue;
                 }
                 CurrentUser.AbleToMakeMove = true;
+                // create a copy of the game board to pass to the user so they can't manipulate the actual game board
+                GameBoard boardCopy = new GameBoard(gameBoard);
+
                 // get the move back from the user
                 KeyValuePair<Position, List<Position>> UserMove = 
-                    (await CurrentUser.MakeMove(ValidMoves));
+                    (await CurrentUser.MakeMove(boardCopy, ValidMoves));
                 // apply the move
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
                 // pass the turn to the other user

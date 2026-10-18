@@ -45,6 +45,17 @@ namespace Reversi.Game
         }
 
         /// <summary>
+        /// A copy constructor that creates a new "copy" instance of the game board
+        /// used for the players to simulate moves without changing the actual game board
+        /// </summary>
+        /// <param name="board"> the original game board to copy</param>
+        public GameBoard(GameBoard other)
+        {
+            Board = (PlayerColor[,])other.Board.Clone();
+            DiscCount = new Dictionary<PlayerColor, int>(other.DiscCount);
+        }
+
+        /// <summary>
         /// Applies a move to the board called from GameManager
         /// Flips over potential discs and adds the new disc, updates the disc count
         /// </summary>
