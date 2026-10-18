@@ -38,6 +38,8 @@ namespace Reversi
         /// </summary>
         private Ellipse[,] disks = new Ellipse[8, 8];
         private Ellipse[,] legalDisks = new Ellipse[8, 8];
+        private Label playerTrackerLabel;
+        
         /// <summary>
         /// Initializes, creates the board, creates the disks, launches gamemode selector dialog
         /// Loaded += GameWindow_Loaded is a check so the main window is launched first. This is so dialog.Owner = this; can be used.
@@ -69,6 +71,7 @@ namespace Reversi
                 bool human1 = dialog.Player1IsHuman;
                 bool human2 = dialog.Player2IsHuman;
                 gameManager = new GameManager(name1, name2, human1, human2);
+                CreatePlayerTrackerLabel();
 
                 gameManager.BoardRefreshed += Refresh;
                 gameManager.GameFinished += ShowGameResult;
@@ -211,9 +214,33 @@ namespace Reversi
                 }
             }
             ShowLegalMoves();
-            ShowCurrentPlayerTurn();
+            UpdatePlayerTracker();
         }
 
+        private void CreatePlayerTrackerLabel()
+        {
+            GameGrid.RowDefinitions.Add(
+                new RowDefinition
+                {
+                    Height = GridLength.Auto
+                });
+            playerTrackerLabel = new Label
+            {
+                Content = $"{gameManager.CurrentUser.Name}'s turn. Their Colour is {gameManager.CurrentUser.playerColor}.",
+                HorizontalAlignment = HorizontalAlignment.Left,
+                FontWeight = FontWeights.Bold,
+                FontSize = 20,
+                Foreground = Brushes.White
+            };
+            Grid.SetRow(playerTrackerLabel, 8);
+            Grid.SetColumnSpan(playerTrackerLabel, 8);
+            GameGrid.Children.Add(playerTrackerLabel);
+        }
+
+        private void UpdatePlayerTracker()
+        {
+            playerTrackerLabel.Content = $"{gameManager.CurrentUser.Name}'s turn. Their Colour is {gameManager.CurrentUser.playerColor}.";
+        }
         private void ShowGameResult()
         {
             if (gameManager.GameOver == true)
@@ -227,11 +254,6 @@ namespace Reversi
                     MessageBox.Show($"{gameManager.Winner} WINS!");
                 }
             }  
-        }
-
-        private void ShowCurrentPlayerTurn()
-        {
-            MessageBox.Show($"It's {gameManager.CurrentUser.Name}'s turn! Their colour is {gameManager.CurrentUser.playerColor}.");
         }
         /// <summary>
         /// Displays black disk.

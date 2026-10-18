@@ -11,6 +11,9 @@ namespace Reversi.Players
     /// <summary>
     /// boolean condition. Sets the value to false when the player 1 or 2 is CPU.
     /// </summary>
+    /// 
+
+    
     public class ComputerPlayer : Player
     {
         private static readonly Random random = new Random(); //declare
@@ -26,7 +29,7 @@ namespace Reversi.Players
             AbleToMakeMove = true;
             return Task.Run(() =>
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(1250);
                 List<Position> legalmoves = moves.Keys.ToList();
                 int randomindex = random.Next(legalmoves.Count);
                 Position chosenmove = legalmoves[randomindex];
