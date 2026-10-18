@@ -48,7 +48,7 @@ namespace Reversi.Game
         /// A copy constructor that creates a new "copy" instance of the game board
         /// used for the players to simulate moves without changing the actual game board
         /// </summary>
-        /// <param name="board"> the original game board to copy</param>
+        /// <param name="other"> the original game board to copy</param>
         public GameBoard(GameBoard other)
         {
             Board = (PlayerColor[,])other.Board.Clone();

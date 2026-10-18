@@ -318,7 +318,7 @@ namespace Reversi
         {
             if (gameManager.GameOver == true)
             {
-                ResultDialog dialog = new ResultDialog(gameManager.Winner);
+                ResultDialog dialog = new ResultDialog(gameManager);
                 dialog.Owner = this;
                 restartRequest = dialog.ShowDialog() == true;
             }

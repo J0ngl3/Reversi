@@ -25,17 +25,17 @@ namespace Reversi
         /// <summary>
         /// placeholder for winner's color
         /// </summary>
-        private PlayerColor winner;
+        private GameManager gameManager;
 
         /// <summary>
         /// Initialize window.
         /// Show result.
         /// </summary>
         /// <param name="winner">Winner's color</param>
-        public ResultDialog(PlayerColor winner)
+        public ResultDialog(GameManager gameManager)
         {
             InitializeComponent();
-            this.winner = winner;
+            this.gameManager = gameManager;
             Showresult();
         }
 
@@ -45,13 +45,18 @@ namespace Reversi
         /// </summary>
         private void Showresult()
         {
-            if (winner == PlayerColor.None)
+            if (gameManager.Winner == PlayerColor.None)
             {
                 ResultLabel.Content = "DRAW!";
             }
+
+            else if (gameManager.Winner == PlayerColor.White)
+            {
+                ResultLabel.Content = $"{gameManager.UserOne.Name} WINS!";
+            }
             else
             {
-                ResultLabel.Content = $"{winner} WINS!";
+                ResultLabel.Content = $"{gameManager.UserTwo.Name} WINS!";
             }
         }
 
