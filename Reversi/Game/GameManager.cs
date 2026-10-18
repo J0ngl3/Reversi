@@ -107,29 +107,35 @@ namespace Reversi.Game
                 // check if the user can make a move, and determine whether the game is over.
                 if (!ValidMoves.Any())
                 {
-                    // set the bool
+                    // set the users "AbleToMakeMove" boolean to false
                     CurrentUser.AbleToMakeMove = false;
+                    // check if the other user can make a move
                     if(!validMovesCalc.GetValidMoves(OtherUser.playerColor, gameBoard.Board).Any())
                     {
+                        // if not, the game is over
                         GameOver = true;
                         Winner = gameBoard.InTheLead();
-                        // if NONE, it's a tie, and report that. Otherwise, display the color that won
-                        // make sure the winner window is displayed
-                        // end the game here
+                        // if Winner==None, it's a tie. Otherwise, display the color that won
                         break;
                     }
+                    // otherwise, pass the turn to the other user
                     PassTurn();
                     continue;
                 }
                 CurrentUser.AbleToMakeMove = true;
+                // create a copy of the game board to pass to the user so they can't manipulate the actual game board
+                GameBoard boardCopy = new GameBoard(gameBoard);
+
+                // get the move back from the user
                 KeyValuePair<Position, List<Position>> UserMove = 
-                    (await CurrentUser.MakeMove(ValidMoves));
+                    (await CurrentUser.MakeMove(boardCopy, ValidMoves));
+                // apply the move
                 gameBoard.ApplyMove(UserMove.Key, CurrentUser.playerColor, UserMove.Value);
-                
-                // create an event that is sent to XAML and mahdy.
+                // pass the turn to the other user
                 PassTurn();
                 
             }
+            // raise the GameFinished event to the UI
             GameFinished?.Invoke();
         }
     }

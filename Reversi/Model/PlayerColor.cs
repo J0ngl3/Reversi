@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace Reversi.Model
 {
+    /// <summary>
+    /// Represents the color of a disc on the board
+    /// If none, the position is empty
+    /// otherwise black or white.
+    /// </summary>
     public enum PlayerColor
     {
         None, White, Black
     }
 
+    /// <summary>
+    /// An extension method that allows us to easily get the opponents color
+    /// </summary>
     public static class PlayerColorExtension
     {
         public static PlayerColor Opponent (this PlayerColor player)
@@ -24,6 +32,7 @@ namespace Reversi.Model
                 return PlayerColor.Black;
             }
 
+            // If the player is None, then there is no opponent so it returns None
             return PlayerColor.None;
         }
     }

@@ -1,31 +1,37 @@
-﻿using Reversi.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Reversi.Game;
+using Reversi.Model;
 
 namespace Reversi.Players
 {
     /// <summary>
-    /// boolean condition. Sets the value to false when the player 1 or 2 is CPU.
-    /// </summary>
-    /// 
-
-    
+    /// Computerplayer subclass of superclass Player
+    /// </summary>    
     public class ComputerPlayer : Player
     {
-        private static readonly Random random = new Random(); //declare
-        // public override bool IsHuman => false;
-        public override Task<KeyValuePair<Position, List<Position>>> MakeMove(Dictionary<Position, List<Position>> moves)
+        // random object to generate random numbers for selecting a move
+        private static readonly Random random = new Random();
+
+        /// <summary>
+        /// MakeMove method that allows the computer to "request" a certain legal move to be made.
+        /// </summary>
+        /// <param name="moves"> the valid moves the computer could make</param>
+        /// <returns> a task that contains the move the user wants to make</returns>
+        public override Task<KeyValuePair<Position, List<Position>>> MakeMove(GameBoard boardCopy, Dictionary<Position, List<Position>> moves)
         {
-            if (moves.Count < 1)
+            // if the computer doesn't have any valid moves, return a task with an empty key value pair
+            if (!moves.Any())
             {
                 AbleToMakeMove = false;
                 return Task.FromResult(new KeyValuePair<Position, List<Position>>());
 
             }
+
             AbleToMakeMove = true;
             return Task.Run(() =>
             {
@@ -35,9 +41,7 @@ namespace Reversi.Players
                 Position chosenmove = legalmoves[randomindex];
 
                 var selectedmove = new KeyValuePair<Position, List<Position>>
-                (
-                    chosenmove, moves[chosenmove]
-                    );
+                (chosenmove, moves[chosenmove]);
 
                 return selectedmove;
             });
