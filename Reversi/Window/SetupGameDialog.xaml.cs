@@ -53,6 +53,16 @@ namespace Reversi
         }
 
         /// <summary>
+        /// Quits if the player doesn't want to play.
+        /// </summary>
+        /// <param name="sender">Clicked</param>
+        /// <param name="e">quits</param>
+        private void Quit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
         /// Initialize SetupGameDialog
         /// </summary>
         public SetupGameDialog()

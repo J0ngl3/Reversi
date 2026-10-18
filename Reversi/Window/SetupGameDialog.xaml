@@ -40,7 +40,10 @@
         </StackPanel>
         
         <!-- Confirm button -->
-        <Button BorderBrush="Black" BorderThickness="1" FontSize="20" Background="Green" Grid.Row="3" Width="100" Height="30" Content="CONFIRM" Click="Confirm_Click"></Button>
+        <Button BorderBrush="Black" BorderThickness="1" FontSize="20" Background="Green" Grid.Row="3" Width="100" Height="30" Content="CONFIRM" Click="Confirm_Click" Margin="-300,0,0,0"></Button>
+        
+        <!-- Exit Button -->
+        <Button BorderBrush="Black" BorderThickness="1" FontSize="20" Background="Red" Grid.Row="3" Width="100" Height="30" Content="QUIT" Click="Quit_Click" Margin="300,0,0,0" />
 
 
     </Grid>
