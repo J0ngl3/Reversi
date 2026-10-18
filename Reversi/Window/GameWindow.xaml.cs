@@ -253,7 +253,8 @@ namespace Reversi
                 {
                     MessageBox.Show($"{gameManager.Winner} WINS!");
                 }
-            }  
+            }
+            Application.Current.Shutdown();
         }
         /// <summary>
         /// Displays black disk.
