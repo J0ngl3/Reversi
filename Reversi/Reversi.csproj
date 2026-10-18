@@ -67,6 +67,9 @@
     <Compile Include="Window\SetupGameDialog.xaml.cs">
       <DependentUpon>SetupGameDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\ResultDialog.xaml.cs">
+      <DependentUpon>ResultDialog.xaml</DependentUpon>
+    </Compile>
     <Page Include="Window\GameWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +83,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Window\SetupGameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\ResultDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

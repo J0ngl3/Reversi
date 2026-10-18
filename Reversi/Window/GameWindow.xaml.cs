@@ -40,10 +40,12 @@ namespace Reversi
         private Ellipse[,] disks = new Ellipse[8, 8];
         private Ellipse[,] legalDisks = new Ellipse[8, 8];
         private Label playerTrackerLabel;
+        private Label DiskCount;
         
         /// <summary>
         /// Initializes, creates the board, creates the disks, launches gamemode selector dialog
         /// Loaded += GameWindow_Loaded is a check so the main window is launched first. This is so dialog.Owner = this; can be used.
+        /// Finished += GameWindow_Finished is the final result using a dialog for the result.
         /// If dialog launches before Main Game Window, it can't be owned by the main window.
         /// </summary>
         public GameWindow()
@@ -61,6 +63,8 @@ namespace Reversi
         /// Creates a label at the bottom of the Game grid to show which player's turn it is.
         /// Refreshes the board after moves.
         /// Checks whether the game is over or not.
+        /// 
+        /// Checkss the boolean restartRequest and if true, sets it to false and starts a new game instance.
         /// </summary>
         /// <param name="sender">game window that has loaded.</param>
         /// <param name="e">event info</param>
@@ -80,6 +84,43 @@ namespace Reversi
 
                 gameManager.BoardRefreshed += Refresh;
                 gameManager.GameFinished += ShowGameResult;
+                await gameManager.GameStarted();
+
+                do
+                {
+                    restartRequest = false;
+                    await StartNewGame();
+                }
+                while (restartRequest);
+            }
+        }
+
+        /// <summary>
+        /// Opens SetupGameDialog again. Starts anew GameManager instance
+        /// If PlayerTrackerLabel missing, makes a new one.
+        /// Refreshes and Show gameresults when game is over.
+        /// </summary>
+        /// <returns>Task of game operation, async.</returns>
+        private async Task StartNewGame()
+        {
+            SetupGameDialog dialog = new SetupGameDialog();
+            dialog.Owner = this;
+
+            if (dialog.ShowDialog() == true)
+            {
+                gameManager = new GameManager
+                (
+                    dialog.NameOne, dialog.NameTwo, dialog.Player1IsHuman, dialog.Player2IsHuman
+                );
+
+                if (playerTrackerLabel == null)
+                {
+                    CreatePlayerTrackerLabel();
+                }
+
+                gameManager.BoardRefreshed += Refresh;
+                gameManager.GameFinished += ShowGameResult;
+
                 await gameManager.GameStarted();
             }
         }
@@ -232,14 +273,10 @@ namespace Reversi
 
         /// <summary>
         /// Adds label underneath game grid to show which player's turn it is.
+        /// Adds label to keep count of Disk amounts for each color.
         /// </summary>
         private void CreatePlayerTrackerLabel()
         {
-            GameGrid.RowDefinitions.Add(
-                new RowDefinition
-                {
-                    Height = GridLength.Auto
-                });
             playerTrackerLabel = new Label
             {
                 Content = $"{gameManager.CurrentUser.Name}'s turn. Their Colour is {gameManager.CurrentUser.playerColor}.",
@@ -248,9 +285,18 @@ namespace Reversi
                 FontSize = 20,
                 Foreground = Brushes.White
             };
-            Grid.SetRow(playerTrackerLabel, 8);
-            Grid.SetColumnSpan(playerTrackerLabel, 8);
-            GameGrid.Children.Add(playerTrackerLabel);
+            InfoGrid.Children.Add(playerTrackerLabel);
+
+            DiskCount = new Label
+            {
+                Content = $"Number of black disks: {gameManager.gameBoard.DiscCount[PlayerColor.Black]}\nNumber of white disks: {gameManager.gameBoard.DiscCount[PlayerColor.White]}",
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0,35,0,0),
+                FontWeight = FontWeights.Bold,
+                FontSize = 20,
+                Foreground = Brushes.White
+            };
+            InfoGrid.Children.Add(DiskCount);
         }
 
         /// <summary>
@@ -259,25 +305,24 @@ namespace Reversi
         private void UpdatePlayerTracker()
         {
             playerTrackerLabel.Content = $"{gameManager.CurrentUser.Name}'s turn. Their Colour is {gameManager.CurrentUser.playerColor}.";
+            DiskCount.Content = $"Number of black disks: {gameManager.gameBoard.DiscCount[PlayerColor.Black]}\nNumber of white disks: {gameManager.gameBoard.DiscCount[PlayerColor.White]}";
         }
 
         /// <summary>
         /// Shows the results of the game. Shuts down when clicking ok on messagebox.
         /// </summary>
+        /// 
+
+        private bool restartRequest = false;
         private void ShowGameResult()
         {
             if (gameManager.GameOver == true)
             {
-                if (gameManager.Winner == PlayerColor.None)
-                {
-                    MessageBox.Show("DRAW!");
-                }
-                else
-                {
-                    MessageBox.Show($"{gameManager.Winner} WINS!");
-                }
+                ResultDialog dialog = new ResultDialog(gameManager.Winner);
+                dialog.Owner = this;
+                restartRequest = dialog.ShowDialog() == true;
             }
-            Application.Current.Shutdown();
+            
         }
 
         /// <summary>

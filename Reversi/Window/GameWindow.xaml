@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Reversi"
         mc:Ignorable="d"
         Title="Reversi" Height="720" Width="720" Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinHeight="450" MinWidth="450">
-  <!-- GameGrid is filled with rectangles, disks, player tracker label and legal disks in the C# code behind. -->
-  <Grid x:Name="GameGrid" Width="400" Height="400">
-    </Grid>
+  <!-- GameGrid is filled with rectangles, disks, player tracker label and legal disks in the C# code behind. InfoGrid holds playertracker DiskConta -->
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid x:Name="GameGrid" Width="400" Height="400"/>
+        <Grid x:Name="InfoGrid" Margin="0,15,0,0"/>
+    </StackPanel> 
+    
 </Window>
