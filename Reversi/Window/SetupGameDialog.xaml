@@ -7,26 +7,39 @@
         xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
         mc:Ignorable="d"
         Title="SetupGameDialog" Background="DimGray" Height="500" Width="500" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterOwner">
+    <!-- Main grid for SetupGameDialog -->
     <Grid>
+        
+        <!-- Grid layout. Divides into 4 equal rows -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <!-- Title label -->
         <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="25" Background="Black" Foreground="White" Height="50" BorderBrush="Black" BorderThickness="1">CHOOSE PLAYER NAME AND PLAYER TYPE</Label>
+        
+        <!-- P1 P2 labels + text input for both -->
         <Label HorizontalAlignment="Left" Grid.Row="1" FontSize="25" Background="Black" Foreground="White" Height="50" BorderBrush="Black" BorderThickness="1" Width="120">PLAYER 1</Label>
         <Label HorizontalAlignment="Left" Grid.Row="2" FontSize="25" Background="Black" Foreground="White" Height="50" BorderBrush="Black" BorderThickness="1" Width="120">PLAYER 2</Label>
         <TextBox x:Name="Player1Name" Grid.Row="1" Height="50" Width="120"></TextBox>
         <TextBox x:Name="Player2Name" Grid.Row="2" Height="50" Width="120"></TextBox>
+        
+        <!-- Toggle buttons for player type choices. Human, CPU. P1 -->
         <StackPanel Grid.Row="1">
             <ToggleButton BorderBrush="Black" BorderThickness="1" x:Name="P1Human" Content="HUMAN" Height="25" Width="50" HorizontalAlignment="Right" Margin="0, 20, 50, 0"></ToggleButton>
             <ToggleButton BorderBrush="Black" BorderThickness="1" x:Name="P1CPU" Content="CPU" Height="25" Width="50" HorizontalAlignment="Right" Margin="0, 20, 50, 0"></ToggleButton>
         </StackPanel>
+        
+        <!-- Toggle buttons for player type choices. P2 -->
         <StackPanel Grid.Row="2">
             <ToggleButton BorderBrush="Black" BorderThickness="1" x:Name="P2Human" Content="HUMAN" Height="25" Width="50" HorizontalAlignment="Right" Margin="0, 20, 50, 0"></ToggleButton>
             <ToggleButton BorderBrush="Black" BorderThickness="1" x:Name="P2CPU" Content="CPU" Height="25" Width="50" HorizontalAlignment="Right" Margin="0, 20, 50, 0"></ToggleButton>
         </StackPanel>
+        
+        <!-- Confirm button -->
         <Button BorderBrush="Black" BorderThickness="1" FontSize="20" Background="Green" Grid.Row="3" Width="100" Height="30" Content="CONFIRM" Click="Confirm_Click"></Button>
 
 

@@ -34,8 +34,9 @@ namespace Reversi
         /// </summary>
         private GameManager gameManager;
         /// <summary>
-        /// Holds and stores disk positions on the board. Board is 8x8.
+        /// Holds and stores disk, Legaldisks and playerTrackerLabel positions on the board. Board is 8x8.
         /// </summary>
+        /// 
         private Ellipse[,] disks = new Ellipse[8, 8];
         private Ellipse[,] legalDisks = new Ellipse[8, 8];
         private Label playerTrackerLabel;
@@ -54,11 +55,15 @@ namespace Reversi
             Loaded += GameWindow_Loaded;
         }
         /// <summary>
-        /// Launches game setup dialog.
-        /// Used to create new GameManager with the selected mode.
+        /// When Game is launched, opens SetupGameDialog, setting ownership to the main window.
+        /// Receives player names, types and creates a new gameManager instance.
+        /// Sends booleans along to check whether players are human.
+        /// Creates a label at the bottom of the Game grid to show which player's turn it is.
+        /// Refreshes the board after moves.
+        /// Checks whether the game is over or not.
         /// </summary>
-        /// <param name="sender">Object that raised event.</param>
-        /// <param name="e">Event data</param>
+        /// <param name="sender">game window that has loaded.</param>
+        /// <param name="e">event info</param>
         private async void GameWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetupGameDialog dialog = new SetupGameDialog();
@@ -80,6 +85,7 @@ namespace Reversi
         }
         /// <summary>
         /// creates the 8x8 board. First adds row & column definition.
+        /// Adds Mouse Click event handler, Cell_MouseLeftButtonDown
         /// </summary>
         private void CreateBoard()
         {
@@ -108,10 +114,13 @@ namespace Reversi
             }
         }
         /// <summary>
-        /// Hander for Mouse click on a cell/gameboard square.
+        /// Event handler for when a rectangle is clicked.
+        /// Simple check if game is valid.
+        /// Passes it to TrySelectMove along with the position (pos)
+        /// Clears Legal move disks since they need to be redrawn.
         /// </summary>
-        /// <param name="sender">Event raiser</param>
-        /// <param name="e">Event data</param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (gameManager == null || gameManager.GameOver)
@@ -139,7 +148,7 @@ namespace Reversi
             }
         }
         /// <summary>
-        /// creates the disks.
+        /// creates the disks and legal disks.
         /// uses the defined row & column definitions.
         /// </summary>
         private void CreateDisks()
@@ -191,7 +200,11 @@ namespace Reversi
             }
         }
 
-       
+       /// <summary>
+       /// Refreshes the table when a move has happened.
+       /// Both player disks and legal move indicator disks.
+       /// Updates player label tracker when current player changes.
+       /// </summary>
         private void Refresh()
         {
             for (int row = 0; row  < 8; row++)
@@ -217,6 +230,9 @@ namespace Reversi
             UpdatePlayerTracker();
         }
 
+        /// <summary>
+        /// Adds label underneath game grid to show which player's turn it is.
+        /// </summary>
         private void CreatePlayerTrackerLabel()
         {
             GameGrid.RowDefinitions.Add(
@@ -237,10 +253,17 @@ namespace Reversi
             GameGrid.Children.Add(playerTrackerLabel);
         }
 
+        /// <summary>
+        /// Updates the player tracker label
+        /// </summary>
         private void UpdatePlayerTracker()
         {
             playerTrackerLabel.Content = $"{gameManager.CurrentUser.Name}'s turn. Their Colour is {gameManager.CurrentUser.playerColor}.";
         }
+
+        /// <summary>
+        /// Shows the results of the game. Shuts down when clicking ok on messagebox.
+        /// </summary>
         private void ShowGameResult()
         {
             if (gameManager.GameOver == true)
@@ -256,12 +279,13 @@ namespace Reversi
             }
             Application.Current.Shutdown();
         }
+
         /// <summary>
         /// Displays black disk.
         /// Used on a specific cell.
         /// </summary>
-        /// <param name="row">board row</param>
-        /// <param name="column">board column</param>
+        /// <param name="row">board row.</param>
+        /// <param name="column">board column.</param>
         private void ShowBlackDisk(int row, int column)
         {
             disks[row, column].Fill = Brushes.Black;
@@ -274,8 +298,8 @@ namespace Reversi
         /// Displays white disk.
         /// Used on specific cell.
         /// </summary>
-        /// <param name="row">board row</param>
-        /// <param name="column">board column</param>
+        /// <param name="row">board row.</param>
+        /// <param name="column">board column.</param>
         private void ShowWhiteDisk(int row, int column)
         {
             disks[row, column].Fill = Brushes.White;
@@ -284,6 +308,11 @@ namespace Reversi
             disks[row, column].Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Displays gray disk, used for legal move indicators.
+        /// </summary>
+        /// <param name="row">board row.</param>
+        /// <param name="column">board column.</param>
         private void ShowGrayDisk(int row, int column)
         {
             legalDisks[row, column].Fill = Brushes.Gray;
@@ -291,8 +320,9 @@ namespace Reversi
             legalDisks[row, column].StrokeThickness = 2;
             legalDisks[row, column].Visibility = Visibility.Visible;
         }
+
         /// <summary>
-        /// Reduces the visibilty of a disk to zero. Hides it completely.
+        /// Hides specific player disk completely.
         /// </summary>
         /// <param name="row">board row</param>
         /// <param name="column">board column</param>
@@ -300,14 +330,20 @@ namespace Reversi
         {
             disks[row, column].Visibility = Visibility.Collapsed;
         }
+        
         /// <summary>
-        /// Puts the start position disks on the board.
+        /// Hides Legal indicator disk completely.
         /// </summary>
-        /// 
+        /// <param name="row">board row.</param>
+        /// <param name="column">board column.</param>
         private void ClearGrayDisk(int row, int column)
         {
             legalDisks[row, column].Visibility = Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// Sets up the starting position for the game.
+        /// </summary>
         private void SetupStartingBoard()
         {
             ShowWhiteDisk(3, 3);
@@ -316,6 +352,9 @@ namespace Reversi
             ShowBlackDisk(4, 3);
         }
         
+        /// <summary>
+        /// Clears the old legal move indicators, places new one receiving keys from ValidMovesCalc.
+        /// </summary>
         private void ShowLegalMoves()
         {
             for (int row = 0; row < 8; row++)
@@ -331,6 +370,9 @@ namespace Reversi
             }
         }
 
+        /// <summary>
+        /// Hides legal move disks.
+        /// </summary>
         private void ClearLegalMoves()
         {
             foreach (Position pos in gameManager.ValidMoves.Keys)
